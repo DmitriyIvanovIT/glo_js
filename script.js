@@ -10,17 +10,12 @@ let money = +prompt('Ваш месячный доход?'),
     amount1 = +prompt('Во сколько это обойдется?'),
     expenses2 = prompt('Введите обязательную статью расходов?'),
     amount2 = +prompt('Во сколько это обойдется?'),
-    budgetDay;
+    budgetDay,
+    accumulatedMonth;
 
-const getExpensesMonth = () => {
-        return amount1 + amount2;
-    },
-    getAccumulatedMonth = () => {
-        return money - getExpensesMonth();
-    },
-    getTargetMonth = () => {
-        return Math.ceil(mission / accumulatedMonth);
-    },
+const getExpensesMonth = () => amount1 + amount2,
+    getAccumulatedMonth = item => money - item,
+    getTargetMonth = item =>  Math.ceil(mission / item),
     showTypeOf = () => {
         console.log('money: ', typeof money);
         console.log('income: ', typeof income);
@@ -38,14 +33,13 @@ const getExpensesMonth = () => {
         }
     };
 
-let accumulatedMonth = getAccumulatedMonth();
-
+accumulatedMonth = getAccumulatedMonth(getExpensesMonth());
 budgetDay = accumulatedMonth / 30;
 
 showTypeOf();
 console.log('Расходы за месяц: ', getExpensesMonth());
 console.log('Расходы: ', addExpenses.toLowerCase().split(', '));
-console.log('Цель будет достигнута через: ', getTargetMonth() + ' месяцев');
+console.log('Цель будет достигнута через: ', getTargetMonth(accumulatedMonth) + ' месяцев');
 console.log('Бюджет на день: ', Math.floor(budgetDay));
 getStatusIncome();
 
