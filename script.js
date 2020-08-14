@@ -5,7 +5,7 @@ let isNumber = n => {
         return !isNaN(parseFloat(n)) && isFinite(n);
     },
     start = () => {
-        money = prompt('Ваш месячный доход?', '50000');
+        money = prompt('Ваш месячный доход?');
 
         while (!isNumber(money)) {
             money = prompt('Ваш месячный доход?');
@@ -29,22 +29,20 @@ let appData = {
     budgetMonth: 0,
     expensesMonth: 0,
     asking: function () {
-        let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую', 'Еда, кварт. плата, проезд, развлечения');
+        let addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
         appData.addExpenses = addExpenses.toLowerCase().split(', ')
         appData.deposit = confirm('Есть ли у вас депозит в банке?');
 
-        let sum = 0,
-            amount,
+        let amount,
             expens;
 
         for (let i = 0; i < 2; i++) {
-            expens = prompt('Введите обязательную статью расходов?', 'еда');
-            amount = prompt('Во сколько это обойдется?', '10000');
+            expens = prompt('Введите обязательную статью расходов?');
+            amount = prompt('Во сколько это обойдется?');
             while (!isNumber(amount)) {
                 amount = prompt('Во сколько это обойдется?');
             };
             appData.expenses[expens] = +amount;
-            sum += +amount;
         }
 
         for(let key in appData.expenses) {
@@ -53,7 +51,7 @@ let appData = {
     },
     getBudget: function() {
         appData.budgetMonth = appData.budget - appData.expensesMonth;
-        appData.budgetDay = appData.budgetMonth / 30;
+        appData.budgetDay = Math.floor(appData.budgetMonth / 30);
     },
     getTargetMonth: function() {
         return Math.ceil(appData.mission / appData.budgetMonth)
@@ -80,6 +78,6 @@ appData.getTargetMonth() > 0 ? console.log('Цель будет достигну
 appData.getStatusIncome();
 let strData = [];
 for(let key in appData) {
-    strData.push(key);
-}
-console.log('Наша программа включает в себя данные: ', strData.join(', '));
+    console.log(`Наша программа включает в себя данные: ключ ${key} и его значение`, appData[key]);
+};
+
