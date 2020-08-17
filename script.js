@@ -15,7 +15,7 @@ let isNumber = n => {
     },
     isString = n => {
         if (n !== null) {
-            if (n.trim().length > 0) {
+            if (n.trim().length > 0 && !isNumber(n)) {
                 return true;
             }
         }
@@ -125,7 +125,7 @@ let appData = {
             while (!isNumber(appData.precentDeposit)) {
                 appData.precentDeposit = prompt('Какой годовой процент?', '10');
             }; 
-            appData.moneyDeposit = +prompt('Сумма накопления?', 10000);
+            appData.moneyDeposit = prompt('Сумма накопления?', 10000);
             while (!isNumber(appData.moneyDeposit)) {
                 appData.moneyDeposit = +prompt('Сумма накопления?', 10000);
             }; 
