@@ -14,17 +14,15 @@ let isNumber = n => {
         return money = +money;
     },
     isString = n => {
-        let check = true;
         if (n !== null) {
             if (n.trim().length > 0 && !isNumber(n)) {
                 for (let i = 0; i< n.length; i++) {
                     if (isNumber(n[i])) {
-                        check = false;
+                        return false;
                     };
                 };
-                if (check) {
-                    return true;
-                } 
+                
+                return true;
             }
         }
 
