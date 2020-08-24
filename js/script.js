@@ -264,8 +264,6 @@ let appData = {
         startButton.style.display = 'block';
         cancel.style.display = 'none';
         startButton.style.pointerEvents = 'none';
-
-        
     }
 };
 
