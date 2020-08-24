@@ -87,8 +87,6 @@ let appData = {
     expensesMonth: 0,
     incomeMonth: 0,
     start: function () {
-        console.log(cloneAppData);
-
         this.budget = +salaryAmount.value;
 
         this.getExpenses();
@@ -236,8 +234,10 @@ let appData = {
     },
     reset: function () {
         let resultTotal = document.querySelectorAll('.result-total');
-        
-        appData = cloneAppData;
+
+        for(let key in cloneAppData) {
+            appData[key] = cloneAppData[key];
+        }
         
         periodSelect.value = 1;
         periodAmount.textContent = periodSelect.value;
