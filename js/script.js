@@ -68,6 +68,9 @@ let isNumber = n => {
             item.disabled = false;
             item.value = '';
         });
+    }, 
+    changePeriod = function() {
+        incomePeriodValue.value = this.calcSavedMoney();
     };
 
 let appData = {
@@ -96,8 +99,14 @@ let appData = {
 
         blockInput();
 
+        incomeAdd.disabled = true;
+        expensesAdd.disabled = true;
+        depositCheck.disabled = true;
+
         startButton.style.display = 'none';
         cancel.style.display = 'block';
+
+        periodSelect.addEventListener('input', changePeriod.bind(appData));
     },
     showResult: function () {
         budgetMonthValue.value = this.budgetMonth;
@@ -107,8 +116,6 @@ let appData = {
         additionalIncomeValue.value = this.addIncome.join(', ');
         targetMonthValue.value = this.getTargetMonth();
         incomePeriodValue.value = this.calcSavedMoney();
-
-        periodSelect.addEventListener('input', appData.showResult.bind(appData));
     },
     addExpensesBlock: function () {
         let cloneExpensesItem = expensesItems[0].cloneNode(true);
@@ -242,17 +249,17 @@ let appData = {
         periodAmount.textContent = periodSelect.value;
 
         unblockInput();
-        resultTotal.forEach(function(item) {
+        resultTotal.forEach(function (item) {
             item.value = '';
         });
 
-        expensesItems.forEach(function(item, i) {
+        expensesItems.forEach(function (item, i) {
             if (i !== 0) {
                 item.remove();
             }
         });
 
-        incomeItems.forEach(function(item, i) {
+        incomeItems.forEach(function (item, i) {
             if (i !== 0) {
                 item.remove();
             }
@@ -260,7 +267,10 @@ let appData = {
 
         expensesAdd.style.display = '';
         incomeAdd.style.display = '';
+        incomeAdd.disabled = false;
+        expensesAdd.disabled = false;
         depositCheck.checked = false;
+        depositCheck.disabled = false;
         startButton.style.display = 'block';
         cancel.style.display = 'none';
         startButton.style.pointerEvents = 'none';
