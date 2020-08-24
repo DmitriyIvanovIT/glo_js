@@ -87,6 +87,8 @@ let appData = {
     expensesMonth: 0,
     incomeMonth: 0,
     start: function () {
+        console.log(cloneAppData);
+
         this.budget = +salaryAmount.value;
 
         this.getExpenses();
@@ -107,6 +109,7 @@ let appData = {
         cancel.style.display = 'block';
 
         periodSelect.addEventListener('input', changePeriod.bind(appData));
+        cancel.addEventListener('click', appData.reset.bind(appData));
     },
     showResult: function () {
         budgetMonthValue.value = this.budgetMonth;
@@ -195,7 +198,7 @@ let appData = {
         this.budgetDay = Math.floor(this.budgetMonth / 30);
     },
     getTargetMonth: function () {
-        return Math.ceil(targetAmount.value / appData.budgetMonth);
+        return Math.ceil(targetAmount.value / this.budgetMonth);
     },
     getInfoDeposit: function () {
         if (appData.deposit) {
@@ -233,18 +236,9 @@ let appData = {
     },
     reset: function () {
         let resultTotal = document.querySelectorAll('.result-total');
-        this.budget = 0;
-        this.income = {};
-        this.addIncome = [];
-        this.addExpenses = [];
-        this.deposit = false;
-        this.precentDeposit = 0;
-        this.moneyDeposit = 0;
-        this.expenses = {};
-        this.budgetDay = 0;
-        this.budgetMonth = 0;
-        this.expensesMonth = 0;
-        this.incomeMonth = 0;
+        
+        appData = cloneAppData;
+        
         periodSelect.value = 1;
         periodAmount.textContent = periodSelect.value;
 
@@ -275,7 +269,8 @@ let appData = {
         cancel.style.display = 'none';
         startButton.style.pointerEvents = 'none';
     }
-};
+},
+cloneAppData = { ...appData };
 
 appData.validMethod();
 
@@ -298,4 +293,3 @@ periodSelect.addEventListener('input', function () {
     periodAmount.textContent = periodSelect.value;
 });
 
-cancel.addEventListener('click', appData.reset.bind(appData));
