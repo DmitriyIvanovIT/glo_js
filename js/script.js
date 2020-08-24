@@ -33,8 +33,8 @@ let isNumber = n => {
                 for (let i = 0; i < n.length; i++) {
                     if (isNumber(n[i])) {
                         return false;
-                    };
-                };
+                    }
+                }
 
                 return true;
             }
@@ -46,7 +46,7 @@ let isNumber = n => {
         let arr = [];
         const ucFirst = str => {
             return str[0].toUpperCase() + str.slice(1);
-        }
+        };
 
         elem.forEach((item, i) => {
             arr[i] = ucFirst(item);
@@ -148,7 +148,7 @@ let appData = {
 
         for (let key in this.expenses) {
             this.expensesMonth += this.expenses[key];
-        };
+        }
     },
     getIncome: function () {
         incomeItems.forEach(function (item) {
@@ -163,7 +163,7 @@ let appData = {
 
         for (let key in this.income) {
             this.incomeMonth += this.income[key];
-        };
+        }
     },
     getAddExpenses: function () {
         let addExpenses = additionalExpensesItem.value.split(',');
@@ -195,11 +195,11 @@ let appData = {
             appData.precentDeposit = prompt('Какой годовой процент?', '10');
             while (!isNumber(appData.precentDeposit)) {
                 appData.precentDeposit = prompt('Какой годовой процент?', '10');
-            };
+            }
             appData.moneyDeposit = prompt('Сумма накопления?', 10000);
             while (!isNumber(appData.moneyDeposit)) {
                 appData.moneyDeposit = +prompt('Сумма накопления?', 10000);
-            };
+            }
         }
     },
     calcSavedMoney: function () {
@@ -225,6 +225,7 @@ let appData = {
         });
     },
     reset: function () {
+        let resultTotal = document.querySelectorAll('.result-total');
         this.budget = 0;
         this.income = {};
         this.addIncome = [];
@@ -237,12 +238,34 @@ let appData = {
         this.budgetMonth = 0;
         this.expensesMonth = 0;
         this.incomeMonth = 0;
+        periodSelect.value = 1;
+        periodAmount.textContent = periodSelect.value;
 
         unblockInput();
-        this.showResult();
+        resultTotal.forEach(function(item) {
+            item.value = '';
+        });
+
+        expensesItems.forEach(function(item, i) {
+            if (i !== 0) {
+                item.remove();
+            }
+        });
+
+        incomeItems.forEach(function(item, i) {
+            if (i !== 0) {
+                item.remove();
+            }
+        });
+
+        expensesAdd.style.display = '';
+        incomeAdd.style.display = '';
+        depositCheck.checked = false;
         startButton.style.display = 'block';
         cancel.style.display = 'none';
         startButton.style.pointerEvents = 'none';
+
+        
     }
 };
 
@@ -267,4 +290,4 @@ periodSelect.addEventListener('input', function () {
     periodAmount.textContent = periodSelect.value;
 });
 
-cancel.addEventListener('click', appData.reset.bind(appData))
+cancel.addEventListener('click', appData.reset.bind(appData));
