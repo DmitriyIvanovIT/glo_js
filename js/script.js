@@ -41,7 +41,6 @@ const AppData = function() {
 };
 
 AppData.prototype.start = function () {
-    const _this = this;
     this.budget = +salaryAmount.value;
 
     this.getExpenses();
@@ -61,8 +60,8 @@ AppData.prototype.start = function () {
     startButton.style.display = 'none';
     cancel.style.display = 'block';
 
-    periodSelect.addEventListener('input', _this.changePeriod.bind(this));
-    cancel.addEventListener('click', _this.reset.bind(this));
+    periodSelect.addEventListener('input', this.changePeriod.bind(this));
+    cancel.addEventListener('click', this.reset.bind(this));
 };
 
 AppData.prototype.showResult = function () {
@@ -245,7 +244,6 @@ AppData.prototype.reset = function () {
 };
 
 AppData.prototype.eventsListeners = function () {
-    const _this = this;
 
     this.validMethod();
     // Обработчики событий
@@ -257,11 +255,11 @@ AppData.prototype.eventsListeners = function () {
         }
     });
 
-    startButton.addEventListener('click', _this.start.bind(this));
+    startButton.addEventListener('click', this.start.bind(this));
 
-    expensesAdd.addEventListener('click', _this.addExpensesBlock.bind(this));
+    expensesAdd.addEventListener('click', this.addExpensesBlock.bind(this));
 
-    incomeAdd.addEventListener('click', _this.addIncomeBlock.bind(this));
+    incomeAdd.addEventListener('click', this.addIncomeBlock.bind(this));
 
     periodSelect.addEventListener('input', function () {
         periodAmount.textContent = periodSelect.value;
@@ -289,6 +287,4 @@ AppData.prototype.changePeriod = function () {
 
 let appData = new AppData();
     
-
-
 appData.eventsListeners();
