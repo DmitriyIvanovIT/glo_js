@@ -25,56 +25,6 @@ let startButton = document.getElementById('start'),
 
 startButton.style.pointerEvents = 'none';
 
-// Функции
-let isNumber = n => {
-        return !isNaN(parseFloat(n)) && isFinite(n);
-    },
-    isString = n => {
-        if (n !== null) {
-            if (n.trim().length > 0 && !isNumber(n)) {
-                for (let i = 0; i < n.length; i++) {
-                    if (isNumber(n[i])) {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-        }
-
-        return false;
-    },
-    convertString = elem => {
-        let arr = [];
-        const ucFirst = str => {
-            return str[0].toUpperCase() + str.slice(1);
-        };
-
-        elem.forEach((item, i) => {
-            arr[i] = ucFirst(item);
-        });
-
-        return console.log(arr.join(', '));
-    },
-    blockInput = function () {
-        const dataBlock = document.querySelector('.data'),
-            inputs = dataBlock.querySelectorAll('[type="text"]');
-        inputs.forEach(function (item) {
-            item.disabled = true;
-        });
-    },
-    unblockInput = function () {
-        const dataBlock = document.querySelector('.data'),
-            inputs = dataBlock.querySelectorAll('[type="text"]');
-        inputs.forEach(function (item) {
-            item.disabled = false;
-            item.value = '';
-        });
-    },
-    changePeriod = function () {
-        incomePeriodValue.value = this.calcSavedMoney();
-    };
-
 const AppData = function() {
     this.budget = 0;
     this.income = {};
@@ -102,7 +52,7 @@ AppData.prototype.start = function () {
 
     this.showResult();
 
-    blockInput();
+    this.blockInput();
 
     incomeAdd.disabled = true;
     expensesAdd.disabled = true;
@@ -111,7 +61,7 @@ AppData.prototype.start = function () {
     startButton.style.display = 'none';
     cancel.style.display = 'block';
 
-    periodSelect.addEventListener('input', changePeriod.bind(this));
+    periodSelect.addEventListener('input', _this.changePeriod.bind(this));
     cancel.addEventListener('click', _this.reset.bind(this));
 };
 
@@ -266,7 +216,7 @@ AppData.prototype.reset = function () {
     periodSelect.value = 1;
     periodAmount.textContent = periodSelect.value;
 
-    unblockInput();
+    this.unblockInput();
     resultTotal.forEach(function (item) {
         item.value = '';
     });
@@ -296,9 +246,11 @@ AppData.prototype.reset = function () {
 
 AppData.prototype.eventsListeners = function () {
     const _this = this;
+
+    this.validMethod();
     // Обработчики событий
-    salaryAmount.addEventListener('change', function () {
-        if (salaryAmount.value.trim()) {
+    salaryAmount.addEventListener('input', function () {
+        if (salaryAmount.value.trim() > 0) {
             startButton.style.pointerEvents = '';
         } else {
             startButton.style.pointerEvents = 'none';
@@ -316,8 +268,27 @@ AppData.prototype.eventsListeners = function () {
     });
 };
 
+AppData.prototype.blockInput = function () {
+    const dataBlock = document.querySelector('.data'),
+        inputs = dataBlock.querySelectorAll('[type="text"]');
+    inputs.forEach(function (item) {
+        item.disabled = true;
+    });
+};
+AppData.prototype.unblockInput = function () {
+    const dataBlock = document.querySelector('.data'),
+        inputs = dataBlock.querySelectorAll('[type="text"]');
+    inputs.forEach(function (item) {
+        item.disabled = false;
+        item.value = '';
+    });
+};
+AppData.prototype.changePeriod = function () {
+    incomePeriodValue.value = this.calcSavedMoney();
+};
+
 let appData = new AppData();
     
 
-appData.validMethod();
+
 appData.eventsListeners();
