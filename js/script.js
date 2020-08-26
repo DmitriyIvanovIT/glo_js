@@ -177,14 +177,14 @@ class AppData {
         let inputName = document.querySelectorAll('[placeholder="Наименование"]'),
             inputSum = document.querySelectorAll('[placeholder="Сумма"]');
     
-        inputName.forEach(function (item) {
-            item.addEventListener('input', function () {
+        inputName.forEach(item => {
+            item.addEventListener('input', () => {
                 item.value = item.value.replace(/[^А-Яа-яЁё,.!? ]/i, '');
             });
         });
     
-        inputSum.forEach(function (item) {
-            item.addEventListener('input', function () {
+        inputSum.forEach(item => {
+            item.addEventListener('input',() => {
                 if (item.value === '0') {
                     item.value = item.value.replace(/[^1-9]/i, '');
                 }
@@ -206,17 +206,17 @@ class AppData {
         periodAmount.textContent = periodSelect.value;
     
         this.unblockInput();
-        resultTotal.forEach(function (item) {
+        resultTotal.forEach(item => {
             item.value = '';
         });
     
-        expensesItems.forEach(function (item, i) {
+        expensesItems.forEach((item, i) => {
             if (i !== 0) {
                 item.remove();
             }
         });
     
-        incomeItems.forEach(function (item, i) {
+        incomeItems.forEach((item, i) => {
             if (i !== 0) {
                 item.remove();
             }
