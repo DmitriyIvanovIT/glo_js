@@ -237,7 +237,7 @@ class AppData {
 
         this.validMethod();
         // Обработчики событий
-        salaryAmount.addEventListener('input', function () {
+        salaryAmount.addEventListener('input', () => {
             if (salaryAmount.value.trim() > 0) {
                 startButton.style.pointerEvents = '';
             } else {
@@ -251,7 +251,7 @@ class AppData {
     
         incomeAdd.addEventListener('click', this.addBlock.bind(this));
     
-        periodSelect.addEventListener('input', function () {
+        periodSelect.addEventListener('input', () => {
             periodAmount.textContent = periodSelect.value;
         });
     }
@@ -259,7 +259,7 @@ class AppData {
     blockInput() {
         const dataBlock = document.querySelector('.data'),
             inputs = dataBlock.querySelectorAll('[type="text"]');
-        inputs.forEach(function (item) {
+        inputs.forEach(item => {
             item.disabled = true;
         });
     }
@@ -267,7 +267,7 @@ class AppData {
     unblockInput() {
         const dataBlock = document.querySelector('.data'),
             inputs = dataBlock.querySelectorAll('[type="text"]');
-        inputs.forEach(function (item) {
+        inputs.forEach(item => {
             item.disabled = false;
             item.value = '';
         });
