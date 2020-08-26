@@ -78,7 +78,7 @@ class AppData {
 
     addExpensesBlock() {
         let cloneExpensesItem = expensesItems[0].cloneNode(true);
-        cloneExpensesItem.querySelectorAll('input').forEach(function (item) {
+        cloneExpensesItem.querySelectorAll('input').forEach((item) => {
             item.value = '';
         });
         expensesItems[0].parentNode.insertBefore(cloneExpensesItem, expensesAdd);
@@ -92,7 +92,7 @@ class AppData {
 
     addIncomeBlock() {
         let cloneIncomeItem = incomeItems[0].cloneNode(true);
-        cloneIncomeItem.querySelectorAll('input').forEach(function (item) {
+        cloneIncomeItem.querySelectorAll('input').forEach(item => {
             item.value = '';
         });
         incomeItems[0].parentNode.insertBefore(cloneIncomeItem, incomeAdd);
@@ -186,14 +186,14 @@ class AppData {
         let inputName = document.querySelectorAll('[placeholder="Наименование"]'),
             inputSum = document.querySelectorAll('[placeholder="Сумма"]');
     
-        inputName.forEach(function (item) {
-            item.addEventListener('input', function () {
+        inputName.forEach(item => {
+            item.addEventListener('input', () => {
                 item.value = item.value.replace(/[^А-Яа-яЁё,.!? ]/i, '');
             });
         });
     
-        inputSum.forEach(function (item) {
-            item.addEventListener('input', function () {
+        inputSum.forEach(item => {
+            item.addEventListener('input', () => {
                 if (item.value === '0') {
                     item.value = item.value.replace(/[^1-9]/i, '');
                 }
@@ -215,17 +215,17 @@ class AppData {
         periodAmount.textContent = periodSelect.value;
     
         this.unblockInput();
-        resultTotal.forEach(function (item) {
+        resultTotal.forEach(item => {
             item.value = '';
         });
     
-        expensesItems.forEach(function (item, i) {
+        expensesItems.forEach((item, i) => {
             if (i !== 0) {
                 item.remove();
             }
         });
     
-        incomeItems.forEach(function (item, i) {
+        incomeItems.forEach((item, i) => {
             if (i !== 0) {
                 item.remove();
             }
@@ -246,7 +246,7 @@ class AppData {
 
         this.validMethod();
         // Обработчики событий
-        salaryAmount.addEventListener('input', function () {
+        salaryAmount.addEventListener('input', () => {
             if (salaryAmount.value.trim() > 0) {
                 startButton.style.pointerEvents = '';
             } else {
@@ -260,7 +260,7 @@ class AppData {
     
         incomeAdd.addEventListener('click', this.addIncomeBlock.bind(this));
     
-        periodSelect.addEventListener('input', function () {
+        periodSelect.addEventListener('input', () => {
             periodAmount.textContent = periodSelect.value;
         });
     }
@@ -268,7 +268,7 @@ class AppData {
     blockInput() {
         const dataBlock = document.querySelector('.data'),
             inputs = dataBlock.querySelectorAll('[type="text"]');
-        inputs.forEach(function (item) {
+        inputs.forEach(item => {
             item.disabled = true;
         });
     }
@@ -276,7 +276,7 @@ class AppData {
     unblockInput() {
         const dataBlock = document.querySelector('.data'),
             inputs = dataBlock.querySelectorAll('[type="text"]');
-        inputs.forEach(function (item) {
+        inputs.forEach(item => {
             item.disabled = false;
             item.value = '';
         });
