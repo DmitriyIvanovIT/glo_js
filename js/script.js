@@ -169,6 +169,12 @@ class AppData {
             }
             item.value = item.value.replace(/[^0-9.]/i, '');
             if (item.className === 'deposit-percent') {
+                if (item.value === '0') {
+                    startButton.style.pointerEvents = 'none';
+                } else {
+                    startButton.style.pointerEvents = '';
+                }
+                
                 if ( +item.value >101) {
                     if (+item.value.slice(0,3) !== 100) {
                         item.value = item.value.slice(0,2);
