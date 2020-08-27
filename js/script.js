@@ -164,29 +164,29 @@ class AppData {
             persent = document.querySelector('[placeholder="Процент"]');
 
         const validNumber = item => {
-            if (item.value === '.') {
-                item.value = item.value.replace(/[^0-9]/i, '');
-            }
-            item.value = item.value.replace(/[^0-9.]/i, '');
-            if (item.className === 'deposit-percent') {
-                if (item.value === '0') {
-                    startButton.style.pointerEvents = 'none';
-                } else {
-                    startButton.style.pointerEvents = '';
+                if (item.value === '.') {
+                    item.value = item.value.replace(/[^0-9]/i, '');
                 }
-                
-                if ( +item.value >101) {
-                    if (+item.value.slice(0,3) !== 100) {
-                        item.value = item.value.slice(0,2);
+                item.value = item.value.replace(/[^0-9.]/i, '');
+                if (item.className === 'deposit-percent') {
+                    if (item.value === '0') {
+                        startButton.style.pointerEvents = 'none';
                     } else {
-                        item.value = item.value.slice(0,3);
+                        startButton.style.pointerEvents = '';
+                    }
+
+                    if (+item.value > 101) {
+                        if (+item.value.slice(0, 3) !== 100) {
+                            item.value = item.value.slice(0, 2);
+                        } else {
+                            item.value = item.value.slice(0, 3);
+                        }
                     }
                 }
-            }
-        },
-        validString = item => {
-            item.value = item.value.replace(/[^А-Яа-яЁё,.!? ]/i, '');
-        };
+            },
+            validString = item => {
+                item.value = item.value.replace(/[^А-Яа-яЁё,.!? ]/i, '');
+            };
 
         inputName.forEach(item => {
             item.addEventListener('input', () => {
@@ -214,6 +214,17 @@ class AppData {
 
         let resultTotal = document.querySelectorAll('.result-total');
 
+        const deleteAllCookies = () => {
+            let cookies = document.cookie.split(";");
+        
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i];
+                let eqPos = cookie.indexOf("=");
+                let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            }
+        }
+
         for (let key in cloneAppData) {
             this[key] = cloneAppData[key];
         }
@@ -240,6 +251,7 @@ class AppData {
         });
 
         localStorage.removeItem('savesCalcData');
+        deleteAllCookies();
     }
 
     getInfoDeposit() {
@@ -281,15 +293,45 @@ class AppData {
 
     eventsListeners() {
 
-        // if (localData.length !== 0) {
-        //     for (let key in localData) {
-        //         console.log(key, localData.key);
-        //         this[key] = localData.key;
-        //     }
+        if (localData.length !== 0) {
+            const arrLocal = [],
+                cookiesName = [];
+            for (let key in localData[localData.length - 1]) {
+                this[key] = localData[localData.length - 1][key];
+                arrLocal.push(key);
+            }
 
-        //     this.showResult();
-        //     this.blockInput();
-        // }
+            let cookies = document.cookie.split('; ');
+            cookies.forEach(item => {
+                item = item.split('=')[0];
+                cookiesName.push(item);
+            });
+
+            const checkCookies = () => {
+                let check;
+                for (let i = 0; i < (cookiesName.length - 1); i++) {
+
+                    if (cookiesName[i] !== arrLocal[i]) {
+                        check = false;
+                        return check;
+                    }
+                    check = true;
+
+                }
+
+                return check;
+            };
+
+            if (checkCookies()) {
+                this.showResult();
+                this.blockInput();
+                periodSelect.addEventListener('input', this.changePeriod.bind(this));
+            } else {
+                this.reset();
+            }
+
+
+        }
 
         this.validMethod();
         // Обработчики событий
@@ -356,7 +398,30 @@ class AppData {
     }
 
     saveData() {
-        const dataObj = {...this};
+        const dataObj = {
+            ...this
+        };
+
+        const setCookie = (key, value, year, month, day, path, domain, secure) => {
+            let cookieStr = `${key}=${encodeURI(value)}`;
+
+            if (year) {
+                const expires = new Date(year, month, day);
+                cookieStr += `; expires=${expires.toGMTString()}`;
+            }
+
+            cookieStr += path ? `; path=${path}` : '';
+            cookieStr += domain ? `; domain=${domain}` : '';
+            cookieStr += secure ? `; secure` : '';
+
+            document.cookie = cookieStr;
+        };
+
+        for (let key in dataObj) {
+            setCookie(key, dataObj[key], 2030, 12, 31);
+        }
+
+        setCookie('isLoad', true, 2030, 12, 31);
 
         localData.push(dataObj);
         localStorage.setItem('savesCalcData', JSON.stringify(localData));
