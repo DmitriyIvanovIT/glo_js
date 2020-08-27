@@ -164,10 +164,10 @@ class AppData {
             persent = document.querySelector('[placeholder="Процент"]');
 
         const validNumber = item => {
-            if (item.value === '0') {
-                item.value = item.value.replace(/[^1-9]/i, '');
+            if (item.value === '.') {
+                item.value = item.value.replace(/[^0-9]/i, '');
             }
-            item.value = item.value.replace(/[^0-9]/i, '');
+            item.value = item.value.replace(/[^0-9.]/i, '');
             if (item.className === 'deposit-percent') {
                 if ( +item.value >101) {
                     if (+item.value.slice(0,3) !== 100) {
@@ -232,11 +232,13 @@ class AppData {
                 item.remove();
             }
         });
+
+        localStorage.removeItem('savesCalcData');
     }
 
     getInfoDeposit() {
         if (this.deposit) {
-            this.precentDeposit = +depositPercent.value;
+            this.precentDeposit = parseFloat(depositPercent.value);
             this.moneyDeposit = +depositAmount.value;
         }
     }
