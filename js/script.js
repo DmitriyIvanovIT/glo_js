@@ -29,6 +29,8 @@ let expensesItems = document.querySelectorAll('.expenses-items'),
 
 startButton.style.pointerEvents = 'none';
 
+const localData = JSON.parse(localStorage.getItem('savesCalcData')) || [];
+
 class AppData {
     constructor() {
         this.budget = 0;
@@ -54,6 +56,7 @@ class AppData {
         this.getBudget();
         this.showResult();
         this.blockInput();
+        this.saveData();
 
         periodSelect.addEventListener('input', this.changePeriod.bind(this));
     }
@@ -165,6 +168,15 @@ class AppData {
                 item.value = item.value.replace(/[^1-9]/i, '');
             }
             item.value = item.value.replace(/[^0-9]/i, '');
+            if (item.className === 'deposit-percent') {
+                if ( +item.value >101) {
+                    if (+item.value.slice(0,3) !== 100) {
+                        item.value = item.value.slice(0,2);
+                    } else {
+                        item.value = item.value.slice(0,3);
+                    }
+                }
+            }
         },
         validString = item => {
             item.value = item.value.replace(/[^А-Яа-яЁё,.!? ]/i, '');
@@ -261,6 +273,16 @@ class AppData {
 
     eventsListeners() {
 
+        // if (localData.length !== 0) {
+        //     for (let key in localData) {
+        //         console.log(key, localData.key);
+        //         this[key] = localData.key;
+        //     }
+
+        //     this.showResult();
+        //     this.blockInput();
+        // }
+
         this.validMethod();
         // Обработчики событий
         salaryAmount.addEventListener('input', () => {
@@ -320,8 +342,16 @@ class AppData {
         cancel.style.display = 'none';
         startButton.style.pointerEvents = 'none';
     }
+
     changePeriod() {
         incomePeriodValue.value = this.calcSavedMoney();
+    }
+
+    saveData() {
+        const dataObj = {...this};
+
+        localData.push(dataObj);
+        localStorage.setItem('savesCalcData', JSON.stringify(localData));
     }
 }
 
