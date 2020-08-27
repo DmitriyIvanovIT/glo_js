@@ -48,6 +48,7 @@ class AppData {
     }
 
     start() {
+        this.deleteAllCookies();
         this.budget = +salaryAmount.value;
 
         this.getExpInc();
@@ -214,17 +215,6 @@ class AppData {
 
         let resultTotal = document.querySelectorAll('.result-total');
 
-        const deleteAllCookies = () => {
-            let cookies = document.cookie.split(";");
-        
-            for (let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i];
-                let eqPos = cookie.indexOf("=");
-                let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-            }
-        }
-
         for (let key in cloneAppData) {
             this[key] = cloneAppData[key];
         }
@@ -251,7 +241,7 @@ class AppData {
         });
 
         localStorage.removeItem('savesCalcData');
-        deleteAllCookies();
+        this.deleteAllCookies();
     }
 
     getInfoDeposit() {
@@ -309,7 +299,7 @@ class AppData {
 
             const checkCookies = () => {
                 let check;
-                for (let i = 0; i < (cookiesName.length - 1); i++) {
+                for (let i = 0; i < arrLocal.length; i++) {
 
                     if (cookiesName[i] !== arrLocal[i]) {
                         check = false;
@@ -329,8 +319,6 @@ class AppData {
             } else {
                 this.reset();
             }
-
-
         }
 
         this.validMethod();
@@ -425,6 +413,16 @@ class AppData {
 
         localData.push(dataObj);
         localStorage.setItem('savesCalcData', JSON.stringify(localData));
+    }
+    deleteAllCookies() {
+        let cookies = document.cookie.split(";");
+    
+        for (let i = 0; i < cookies.length; i++) {
+            let cookie = cookies[i];
+            let eqPos = cookie.indexOf("=");
+            let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        }
     }
 }
 
