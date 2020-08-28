@@ -284,24 +284,21 @@ class AppData {
     eventsListeners() {
 
         if (localData.length !== 0) {
-            const arrLocal = [],
-                cookiesName = [];
+            const arrLocal = [];
+            
             for (let key in localData[localData.length - 1]) {
                 this[key] = localData[localData.length - 1][key];
                 arrLocal.push(key);
             }
 
             let cookies = document.cookie.split('; ');
-            cookies.forEach(item => {
-                item = item.split('=')[0];
-                cookiesName.push(item);
-            });
+            cookies = cookies.map(item => item.split('=')[0]);
 
             const checkCookies = () => {
                 let check;
                 for (let i = 0; i < arrLocal.length; i++) {
 
-                    if (cookiesName[i] !== arrLocal[i]) {
+                    if (cookies[i] !== arrLocal[i]) {
                         check = false;
                         return check;
                     }
