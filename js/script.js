@@ -436,13 +436,11 @@ class AppData {
     }
 
     checkDeposit() {
-        if (salaryAmount.value !== '') {
-            if (depositPercent.value !== '' && depositAmount.value !== '') {
+            if (depositPercent.value !== '' && depositAmount.value !== '' && salaryAmount.value !== '') {
                 startButton.style.pointerEvents = '';
             } else {
                 startButton.style.pointerEvents = 'none';
             }
-        }
     }
 }
 
