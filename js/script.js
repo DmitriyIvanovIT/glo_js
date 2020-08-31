@@ -176,7 +176,7 @@ class AppData {
                         startButton.style.pointerEvents = '';
                     }
 
-                    if (+item.value > 101) {
+                    if (+item.value > 100) {
                         if (+item.value.slice(0, 3) !== 100) {
                             item.value = item.value.slice(0, 2);
                         } else {
