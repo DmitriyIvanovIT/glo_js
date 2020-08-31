@@ -251,8 +251,8 @@ class AppData {
         }
     }
 
-    changePercent() {
-        const valueSelect = this.value;
+    changePercent(value) {
+        const valueSelect = value;
         if (valueSelect === 'other') {
             depositPercent.value = '';
             depositPercent.style.display = 'inline-block';
@@ -267,7 +267,12 @@ class AppData {
             depositBank.style.display = 'inline-block';
             depositAmount.style.display = 'inline-block';
             this.deposit = true;
-            depositBank.addEventListener('change', this.changePercent);
+            startButton.style.pointerEvents = 'none';
+
+            depositBank.addEventListener('change', () => {
+                this.changePercent(depositBank.value);
+                this.checkDeposit();
+            });
         } else {
             this.deposit = false;
             depositBank.style.display = '';
@@ -276,7 +281,11 @@ class AppData {
             depositBank.value = '';
             depositAmount.value = '';
             depositPercent.value = '';
-            depositBank.removeEventListener('change', this.changePercent);
+            depositBank.removeEventListener('change', () => {
+                this.changePercent();
+                this.checkDeposit();
+            });
+            startButton.style.pointerEvents = '';
         }
 
     }
@@ -285,7 +294,7 @@ class AppData {
 
         if (localData.length !== 0) {
             const arrLocal = [];
-            
+
             for (let key in localData[localData.length - 1]) {
                 this[key] = localData[localData.length - 1][key];
                 arrLocal.push(key);
@@ -341,6 +350,10 @@ class AppData {
         cancel.addEventListener('click', this.reset.bind(this));
 
         depositCheck.addEventListener('change', this.depositHandler.bind(this));
+
+        depositPercent.addEventListener('input', this.checkDeposit);
+
+        depositAmount.addEventListener('input', this.checkDeposit);
     }
 
     blockInput() {
@@ -413,12 +426,22 @@ class AppData {
     }
     deleteAllCookies() {
         let cookies = document.cookie.split(";");
-    
+
         for (let i = 0; i < cookies.length; i++) {
             let cookie = cookies[i];
             let eqPos = cookie.indexOf("=");
             let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
             document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+        }
+    }
+
+    checkDeposit() {
+        if (salaryAmount.value !== '') {
+            if (depositPercent.value !== '' && depositAmount.value !== '') {
+                startButton.style.pointerEvents = '';
+            } else {
+                startButton.style.pointerEvents = 'none';
+            }
         }
     }
 }
